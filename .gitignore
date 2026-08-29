@@ -1,0 +1,78 @@
+# Rust build output
+target/
+*.rs.bk
+
+# Dependencies
+node_modules/
+*.d.ts
+
+# Python (LightRAG)
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.venv/
+venv/
+rag/lightrag-env/
+rag/lightrag/data/
+data/
+.fih_history
+fih.db
+*.snapshot
+*.parquet
+sqlite*.db
+wal
+_secret*
+
+# Rust lockfiles: untracked so git dependencies (chton, syntagma)
+# resolve to the latest commit of their declared branch (main).
+# Run `cargo update` in a workspace to refresh its local lockfile.
+Cargo.lock
+
+# Wrangler build output
+.wrangler/
+dist/
+
+# Local secrets (NEVER commit)
+.dev.vars
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# LightRAG runtime
+inputs/
+rag/inputs/
+.pytest_cache/
+.python-version
+
+# Spin runtime state
+.spin/
+
+# Rust build (workspace)
+core/target/
+result/
+
+logs
+
+# Pre-compiled binaries (Helix remote_server, etc.)
+.bin/
+
+# Vendored external dependencies (cloned by run.sh)
+libs/tagma/

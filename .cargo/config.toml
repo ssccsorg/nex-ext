@@ -1,0 +1,4 @@
+# Use git CLI for fetching git dependencies so SSH credentials work
+# for private repositories (ssccsorg/nexus, ssccsorg/chton).
+[net]
+git-fetch-with-cli = true
