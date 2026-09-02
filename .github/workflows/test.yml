@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - uses: Swatinem/rust-cache@v2
+
+      # Formatting gate.
+      - name: fmt
+        run: cargo fmt --check
+
+      # Lint gate: the whole workspace (engine crates, frontend, e2e).
+      - name: clippy
+        run: cargo clippy --workspace -- -D warnings
+
+      # Test gate. nex-duckdb compiles the bundled DuckDB C++ at build
+      # time, so this step is the slow one; the e2e tests prove the
+      # Cypher to DuckDB path and the FihStorage to DuckDB network path.
+      - name: test
+        run: cargo test --workspace
