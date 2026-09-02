@@ -1,10 +1,11 @@
 [package]
-name = "nex-db-core"
+name = "nex-ext-core"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+description = "nex-ext-core: common query contract for the nex-ext storage engines. Owns the QueryCapable spec (ColdQuery and friends); engine crates under db/ and kv/ implement it."
 
 [dependencies]
-interface-query = { workspace = true }
+nex-fih = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

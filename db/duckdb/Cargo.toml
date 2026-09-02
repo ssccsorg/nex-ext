@@ -1,12 +1,11 @@
 [package]
-name = "nex-db-duckdb"
+name = "nex-duckdb"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
 [dependencies]
-nex-db-core = { path = "../../core" }
-interface-query = { workspace = true }
+nex-ext-core = { path = "../../core" }
 nex-fih = { workspace = true }
 duckdb = { version = "1.105", features = ["bundled", "parquet"] }
 serde = { workspace = true }

@@ -2,7 +2,8 @@
 resolver = "2"
 members = [
     "core",
-    "storage/duckdb",
+    "db/duckdb",
+    "db/cypher",
 ]
 
 [workspace.package]
@@ -14,7 +15,6 @@ license = "Apache-2.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 log = "0.4"
-interface-query = { git = "https://github.com/ssccsorg/nexus", package = "interface-query", branch = "main" }
 nex = { git = "https://github.com/ssccsorg/nexus", package = "nex", branch = "main" }
 nex-core = { git = "https://github.com/ssccsorg/nexus", package = "nex-core", branch = "main" }
 nex-fih = { git = "https://github.com/ssccsorg/nexus", package = "nex-fih", branch = "main" }

@@ -16,8 +16,8 @@
 //! refresh interaction is sensitive to string comparison semantics;
 //! use `past_ts()` and `now_ts()` to create predictable timestamp gaps.
 
-use nex_db_duckdb::DuckDbStorage;
-use nex_db_duckdb::flush::FlushCursor;
+use nex_duckdb::DuckDbStorage;
+use nex_duckdb::flush::FlushCursor;
 use nex_fih::{CoordId, StorageRead}; // project_id via StorageRead
 use tempfile::TempDir;
 

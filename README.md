@@ -1,27 +1,44 @@
-# nex-db
+# nex-ext
 
-Universal database adapter layer for the Nexus ecosystem.
+Storage extensions for the Nexus network.
 
-nex-db is the thin `nex` film applied to database engines: it attaches a
-database (DuckDB today, others later) to the Nexus network through the
-nex protocol. It is not a Nexus database; it is the standard plug that
-makes any database queryable from Nexus.
+nex-ext is the attachment tier of the ecosystem: queryable storage engines
+that plug into the Nexus network. It is distinct from chton, which owns the
+coordinate materialization substrate. nex-ext engines sit above chton and
+nexus and expose stored data through query languages (SQL, Cypher, and
+others).
+
+```
+tagma     coordinate spec (Coord, CoordPath)
+chton     coordinate materialization (physical storage substrate)
+nexus     semantics (FIH), the nexus network
+nex-ext   engines attached to the network (this repository)
+```
 
 ## Structure
 
 ```
-nex-db/
-├── core/            # common DB abstraction (QueryCapable contract surface)
-└── storage/
-    ├── duckdb/      # nex-duckdb: DuckDB engine implementation
-    └── cypher/      # nex-cypher: Cypher-compatible frontend (planned)
+nex-ext/
+├── core/            # nex-ext-core: common query contract
+│                    #   QueryCapable spec (ColdQuery and friends),
+│                    #   moved from nexus interface/query
+├── db/              # legacy/tabular database engines
+│   ├── duckdb/      # nex-duckdb: DuckDB engine (SQL over parquet views)
+│   └── cypher/      # nex-cypher: Cypher-compatible frontend
+│                    #   Cypher query -> ColdQuery -> db engine execution
+├── kv/              # coord-based key-value engines (planned)
+└── graph/           # coord-to-graph execution (planned)
 ```
 
 ## Principles
 
-- One interface, many engines. The `QueryCapable` contract in
-  `interface/query` (nexus workspace) is the single connection point.
-- The contract stays in nexus; nex-db consumes it as a git dependency.
-  Nexus does not depend on nex-db, so the dependency is one-directional.
+- One contract, many engines. `QueryCapable` lives in nex-ext-core; the
+  contract and its specs stay with the engines, not in the nexus main
+  repository.
+- Engines are selectable behind the same plug: attach nex-ext and choose
+  `duckdb` and DuckDB runs in the nexus network; choose `cypher` and the
+  Cypher surface over coord-structured storage is available.
 - Query languages are frontends, not infrastructure. Cypher and SQL are
-  engine-side concerns; nexus infrastructure holds the contract only.
+  engine-side concerns.
+- Dependency direction is one-way: nex-ext consumes nexus (nex-fih domain
+  types); nexus does not depend on nex-ext.

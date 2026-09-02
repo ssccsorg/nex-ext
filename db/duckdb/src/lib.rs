@@ -5,7 +5,7 @@ pub mod duckdb_ext;
 pub mod flush;
 
 use flush::{FlushCursor, FlushResult};
-use interface_query::ColdQuery;
+use nex_ext_core::ColdQuery;
 use nex_fih::{
     BoardState, ColdStorage, Content, CoordId, EvictCapable, Fact, FilterCapable, Hint, Intent,
     PartitionData, ScanCapable, StateFilter, StorageRead, TimeRangeCapable,
@@ -529,7 +529,7 @@ impl DuckDbStorage {
     }
 }
 
-impl interface_query::QueryCapable for DuckDbStorage {
+impl nex_ext_core::QueryCapable for DuckDbStorage {
     fn query_plan(&self, plan: &ColdQuery) -> Result<Vec<HashMap<String, Content>>, String> {
         let sql = cypher_sql::translate(plan, None)?;
         let conn = self.conn.lock().unwrap();

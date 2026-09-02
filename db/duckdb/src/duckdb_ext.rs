@@ -4,7 +4,7 @@
 // generic tabular query model. They are bundled in `DuckDbQueryExt` and passed
 // to `cypher_sql::translate` alongside the generic `ColdQuery`.
 
-use interface_query::{ColdOrder, ColdQuery};
+use nex_ext_core::{ColdOrder, ColdQuery};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
