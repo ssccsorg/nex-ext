@@ -263,16 +263,15 @@ fn expr_to_cold_filter(expr: &cyrs_plan::Expr) -> Option<ColdFilter> {
 }
 
 /// Extract a column name from a cyrs_plan Expr representing a property access.
+///
+/// Returns the bare property name. The cyrs lowering qualifies the field
+/// with the variable id ("0.origin"); ColdQuery is a tabular surface over
+/// a single entity per query, so the variable prefix is meaningless and
+/// would break the SQL column reference.
 fn expr_to_field_name(expr: &cyrs_plan::Expr) -> Option<String> {
     use cyrs_plan::Expr;
     match expr {
-        Expr::Prop { target, prop } => {
-            let var_name = match target.as_ref() {
-                Expr::Var(id) => id.0.to_string(),
-                _ => return None,
-            };
-            Some(format!("{}.{}", var_name, prop.as_str()))
-        }
+        Expr::Prop { prop, .. } => Some(prop.as_str().to_string()),
         _ => None,
     }
 }

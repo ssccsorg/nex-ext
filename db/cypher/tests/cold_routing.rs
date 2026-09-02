@@ -125,4 +125,3 @@ fn internal_match_where_string_eq() {
     let cq = cold.unwrap();
     assert_filters_nonempty(&cq);
 }
-

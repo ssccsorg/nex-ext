@@ -4,6 +4,7 @@ members = [
     "core",
     "db/duckdb",
     "db/cypher",
+    "e2e",
 ]
 
 [workspace.package]
