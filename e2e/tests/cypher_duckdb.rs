@@ -115,7 +115,7 @@ fn internal_cypher_query_runs_against_duckdb() {
 
 #[test]
 fn graph_pattern_is_not_routed_to_duckdb() {
-    let (storage, _td) = empty_storage();
+    let (_storage, _td) = empty_storage();
     let plan = Plan::from_cyrs("MATCH (f:Fact)-[:drives]->(i:Intent) RETURN f.fact_id").unwrap();
     assert!(
         plan.to_cold_query().is_none(),
