@@ -5,7 +5,6 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-nex-ext-core = { path = "../../core" }
 nex-fih = { workspace = true }
 duckdb = { version = "1.105", features = ["bundled", "parquet"] }
 serde = { workspace = true }

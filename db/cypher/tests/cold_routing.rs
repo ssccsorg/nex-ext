@@ -4,7 +4,7 @@
 // Internal (PlanIR) plan variants, plus execute_with_cold hot/cold routing.
 
 use nex_cypher::Plan;
-use nex_ext_core::ColdQuery;
+use nex_fih::ColdQuery;
 
 fn assert_label(cq: &ColdQuery, expected: &str) {
     assert_eq!(cq.label, expected);

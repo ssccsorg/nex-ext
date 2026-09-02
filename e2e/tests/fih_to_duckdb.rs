@@ -18,7 +18,7 @@
 
 use nex_cypher::Plan;
 use nex_duckdb::DuckDbStorage;
-use nex_ext_core::QueryCapable;
+use nex_fih::QueryCapable;
 use nex_fih::io::file_io::{FileIo, IoFuture};
 use nex_fih::{AsyncFactCapable, AsyncStorageRead, Content, Fact, FihStorage, StorageRead};
 use std::collections::HashMap;

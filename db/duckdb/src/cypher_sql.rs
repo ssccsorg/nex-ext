@@ -21,7 +21,7 @@
 //   - ORDER BY, LIMIT, OFFSET, DISTINCT
 
 use crate::duckdb_ext::{DuckDbQueryExt, JsonFilter, VectorFilter, WindowFuncDef};
-use nex_ext_core::{ColdFilter, ColdQuery};
+use nex_fih::{ColdFilter, ColdQuery};
 use serde_json::Value;
 
 // ── SQL translation ────────────────────────────────────────────────────────

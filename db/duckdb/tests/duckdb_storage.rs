@@ -1,6 +1,6 @@
 use nex_duckdb::DuckDbStorage;
-use nex_ext_core::QueryCapable;
-use nex_ext_core::{ColdFilter, ColdQuery};
+use nex_fih::QueryCapable;
+use nex_fih::{ColdFilter, ColdQuery};
 use nex_fih::{
     Content, CoordId, FilterCapable, ScanCapable, StateFilter, StorageRead, TimeRangeCapable,
 };

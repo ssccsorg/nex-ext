@@ -13,6 +13,6 @@ pub mod parser;
 pub mod plan;
 
 // Re-export common query types from interface-query for convenience.
-pub use nex_ext_core::{AggregateDef, ColdFilter, ColdOrder, ColdQuery, QueryCapable};
+pub use nex_fih::{AggregateDef, ColdFilter, ColdOrder, ColdQuery, QueryCapable};
 pub use parser::parse_query;
 pub use plan::*;

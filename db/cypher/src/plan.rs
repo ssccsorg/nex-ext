@@ -9,7 +9,7 @@ pub use cyrs_hir;
 
 use cyrs_plan::{self, ReadOp, VarId, WriteOp};
 
-use nex_ext_core::{ColdFilter, ColdQuery};
+use nex_fih::{ColdFilter, ColdQuery};
 
 /// Unified plan: one type for both execution paths.
 #[derive(Debug, Clone)]

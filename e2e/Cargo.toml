@@ -7,7 +7,6 @@ publish = false
 description = "nex-ext end-to-end verification framework: proves the full Cypher to DuckDB path — parse, cold-route to ColdQuery, translate to SQL, execute against DuckDbStorage — so a chosen engine runs in the nexus network."
 
 [dependencies]
-nex-ext-core = { path = "../core" }
 nex-cypher = { path = "../db/cypher" }
 nex-duckdb = { path = "../db/duckdb" }
 nex-fih = { workspace = true }

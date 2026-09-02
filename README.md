@@ -19,26 +19,29 @@ nex-ext   engines attached to the network (this repository)
 
 ```
 nex-ext/
-├── core/            # nex-ext-core: common query contract
-│                    #   QueryCapable spec (ColdQuery and friends),
-│                    #   moved from nexus interface/query
-├── db/              # legacy/tabular database engines
+├── db/
 │   ├── duckdb/      # nex-duckdb: DuckDB engine (SQL over parquet views)
 │   └── cypher/      # nex-cypher: Cypher-compatible frontend
 │                    #   Cypher query -> ColdQuery -> db engine execution
-├── kv/              # coord-based key-value engines (planned)
-└── graph/           # coord-to-graph execution (planned)
+├── e2e/             # end-to-end verification framework
+└── kv/              # coord-based key-value engines (planned)
 ```
+
+The FIH query contract (ColdQuery, QueryCapable) lives in the nexus
+repository as part of fih-model, the stable FIH storage-trait family
+(StorageRead, FilterCapable, ScanCapable, ...). Engine crates here
+consume it from nex-fih; the nexus runtime (nexd launching nex) speaks it
+as a runtime boundary, so the contract stays with the stable core.
 
 ## Principles
 
-- One contract, many engines. `QueryCapable` lives in nex-ext-core; the
-  contract and its specs stay with the engines, not in the nexus main
-  repository.
+- One contract, many engines. `QueryCapable` is part of fih-model in the
+  nexus repository; the contract and its specs stay with the stable core
+  because it is a runtime boundary (nexd launches nex).
 - Engines are selectable behind the same plug: attach nex-ext and choose
   `duckdb` and DuckDB runs in the nexus network; choose `cypher` and the
   Cypher surface over coord-structured storage is available.
 - Query languages are frontends, not infrastructure. Cypher and SQL are
   engine-side concerns.
-- Dependency direction is one-way: nex-ext consumes nexus (nex-fih domain
-  types); nexus does not depend on nex-ext.
+- Dependency direction is one-way: nex-ext consumes nexus (fih-model
+  contract and domain types); nexus does not depend on nex-ext.

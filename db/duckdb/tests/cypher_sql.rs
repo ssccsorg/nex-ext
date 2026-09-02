@@ -4,7 +4,7 @@ use nex_duckdb::cypher_sql::*;
 use nex_duckdb::duckdb_ext::{
     CteDef, DuckDbQueryExt, JsonFilter, JsonProjection, VectorFilter, VectorScore, WindowFuncDef,
 };
-use nex_ext_core::{AggregateDef, ColdFilter, ColdOrder, ColdQuery};
+use nex_fih::{AggregateDef, ColdFilter, ColdOrder, ColdQuery};
 use serde_json::Value;
 
 // ── Existing test helpers ──────────────────────────────────────────────

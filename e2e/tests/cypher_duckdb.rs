@@ -15,9 +15,9 @@
 
 use nex_cypher::Plan;
 use nex_duckdb::DuckDbStorage;
-use nex_ext_core::QueryCapable;
+use nex_fih::QueryCapable;
 use nex_fih::{Content, StorageRead};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use tempfile::TempDir;
 
 /// Create a DuckDbStorage over an empty temp directory.
@@ -44,7 +44,7 @@ fn inject_fact(storage: &DuckDbStorage, fact_id: &str, origin: &str, content: &s
     storage.conn().lock().unwrap().execute(&sql, []).unwrap();
 }
 
-fn text_content_value(row: &HashMap<String, Content>, col: &str) -> String {
+fn text_content_value(row: &BTreeMap<String, Content>, col: &str) -> String {
     let c = row.get(col).expect("column present");
     assert_eq!(c.mime_type, "text/plain", "column {col} should be text");
     String::from_utf8(c.data.clone()).unwrap()

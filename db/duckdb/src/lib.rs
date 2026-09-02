@@ -5,12 +5,12 @@ pub mod duckdb_ext;
 pub mod flush;
 
 use flush::{FlushCursor, FlushResult};
-use nex_ext_core::ColdQuery;
+use nex_fih::ColdQuery;
 use nex_fih::{
     BoardState, ColdStorage, Content, CoordId, EvictCapable, Fact, FilterCapable, Hint, Intent,
     PartitionData, ScanCapable, StateFilter, StorageRead, TimeRangeCapable,
 };
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs;
 use std::ops::Range;
 use std::sync::Mutex;
@@ -529,8 +529,8 @@ impl DuckDbStorage {
     }
 }
 
-impl nex_ext_core::QueryCapable for DuckDbStorage {
-    fn query_plan(&self, plan: &ColdQuery) -> Result<Vec<HashMap<String, Content>>, String> {
+impl nex_fih::QueryCapable for DuckDbStorage {
+    fn query_plan(&self, plan: &ColdQuery) -> Result<Vec<BTreeMap<String, Content>>, String> {
         let sql = cypher_sql::translate(plan, None)?;
         let conn = self.conn.lock().unwrap();
         let mut stmt = conn
@@ -545,7 +545,7 @@ impl nex_ext_core::QueryCapable for DuckDbStorage {
 
         let rows = stmt
             .query_map([], |row| {
-                let mut map = HashMap::new();
+                let mut map = BTreeMap::new();
                 for (i, col) in result_cols.iter().enumerate() {
                     let val = duckdb_column_to_content(row, i);
                     map.insert(col.clone(), val);
