@@ -12,7 +12,7 @@ GRAPHML_PATH = os.environ.get(
     "GRAPHML_PATH",
     os.path.join(
         os.path.dirname(__file__),
-        "..", "..", "rag", "lightrag", "data", "default",
+        "..", "lightrag", "data", "default",
         "graph_chunk_entity_relation.graphml",
     ),
 )
