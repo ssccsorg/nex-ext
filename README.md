@@ -24,6 +24,9 @@ nex-ext/
 │   └── cypher/      # nex-cypher: Cypher-compatible frontend
 │                    #   Cypher query -> ColdQuery -> db engine execution
 ├── e2e/             # end-to-end verification framework
+├── ext/             # external engine runner harness (Python: lightrag,
+│                    #   graphiti, memgraph, edgequake adapters + _runner)
+├── scripts/         # host wrappers for the ext/ engines and image builds
 └── kv/              # coord-based key-value engines (planned)
 ```
 
@@ -32,6 +35,12 @@ repository as part of fih-model, the stable FIH storage-trait family
 (StorageRead, FilterCapable, ScanCapable, ...). Engine crates here
 consume it from nex-fih; the nexus runtime (nexd launching nex) speaks it
 as a runtime boundary, so the contract stays with the stable core.
+
+The `ext/` runner harness is the docker-run tier for external Blackboard
+engines (LightRAG, Graphiti, Memgraph, EdgeQuake). It is Python, not part
+of the Rust workspace, and is verified by its own CI gate
+(`.github/workflows/ext.yml`): compileall plus standard-library unit
+tests, and a manual `workflow_dispatch` container build job.
 
 ## Principles
 

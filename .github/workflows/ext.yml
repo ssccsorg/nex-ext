@@ -1,0 +1,46 @@
+name: ext (external engine runner harness)
+
+on:
+  push:
+    paths:
+      - "ext/**"
+      - "scripts/run-lightrag.sh"
+      - "scripts/run-graphiti.sh"
+      - "scripts/run-memgraph.sh"
+      - "scripts/run-edgequake.sh"
+      - "scripts/run-build-containers.sh"
+      - ".github/workflows/ext.yml"
+  pull_request:
+    paths:
+      - "ext/**"
+      - "scripts/run-lightrag.sh"
+      - "scripts/run-graphiti.sh"
+      - "scripts/run-memgraph.sh"
+      - "scripts/run-edgequake.sh"
+      - "scripts/run-build-containers.sh"
+      - ".github/workflows/ext.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Syntax gate
+        run: python3 -m compileall -q ext
+      - name: Unit tests
+        run: PYTHONPATH=ext python3 -m unittest discover -s ext/tests -t ext -v
+
+  containers:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build local engine images
+        run: ./scripts/run-build-containers.sh
