@@ -7,6 +7,8 @@ Run from the repository root:
 No network, Docker, or external services are touched.
 """
 
+import contextlib
+import io
 import sys
 import tempfile
 import unittest
@@ -84,8 +86,10 @@ class CliTests(unittest.TestCase):
         self.assertIn(default, ENGINE_REGISTRY)
 
     def test_unknown_engine_exits(self):
-        with self.assertRaises(SystemExit):
-            _find_engine("does-not-exist")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            with self.assertRaises(SystemExit):
+                _find_engine("does-not-exist")
 
     def test_known_engine_resolves(self):
         engine = _find_engine("memgraph")
