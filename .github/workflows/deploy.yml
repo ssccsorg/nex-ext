@@ -29,6 +29,16 @@ jobs:
       - name: npm ci check
         run: ./scripts/deploy-gateway.sh --check
 
+      - name: Typecheck af-sync
+        run: |
+          npm --prefix gateway/af-sync run cf-typegen
+          npm --prefix gateway/af-sync run typecheck
+
+      - name: Typecheck module-hub
+        run: |
+          npm --prefix gateway/module-hub run cf-typegen
+          npm --prefix gateway/module-hub run typecheck
+
   deploy:
     # Manual only; requires the Cloudflare API token secret.
     if: ${{ github.event_name == 'workflow_dispatch' && secrets.CFWORKER_EDIT != '' }}

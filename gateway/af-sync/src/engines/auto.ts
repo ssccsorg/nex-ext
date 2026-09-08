@@ -14,6 +14,8 @@ import type { Env } from "../index";
 // AI provider interface
 // ---------------------------------------------------------------------------
 interface AIProvider {
+  /** Provider label used in logs. */
+  readonly name: string;
   /** Generate an embedding vector for the given text. */
   getEmbedding(text: string, env: Env): Promise<number[]>;
 }
@@ -121,26 +123,15 @@ export class AutoRagHandler {
     this.providers = [new CfAIProvider(), new DeepSeekProvider()];
   }
 
-  private base(env: Env): string {
-    return env.LIGHTRAG_API_HOST; // fallback to LightRAG host for metadata
-  }
-
-  private headers(env: Env): HeadersInit {
-    const h: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-    if (env.LIGHTRAG_API_KEY) {
-      h["X-API-Key"] = env.LIGHTRAG_API_KEY;
-    }
-    return h;
-  }
-
   // -------------------------------------------------------------------------
   // getEmbedding — try CF AI first, fall back to DeepSeek
   // -------------------------------------------------------------------------
   private async getEmbedding(text: string, env: Env): Promise<number[]> {
     for (let i = 0; i < this.providers.length; i++) {
       const provider = this.providers[i];
+      if (!provider) {
+        continue;
+      }
       try {
         const embedding = await provider.getEmbedding(text, env);
         console.log(
@@ -186,6 +177,9 @@ export class AutoRagHandler {
 
     for (let i = 0; i < chunks.length; i++) {
       const chunkTextContent = chunks[i];
+      if (chunkTextContent === undefined) {
+        continue;
+      }
       const embedding = await this.getEmbedding(chunkTextContent, env);
       results.push({
         chunk_id: `${key}#chunk-${i}`,
@@ -217,7 +211,7 @@ export class AutoRagHandler {
   // -------------------------------------------------------------------------
   // deleteDocument — remove from KV mapping (Vectorize upsert handles removal)
   // -------------------------------------------------------------------------
-  async deleteDocument(id: string, env: Env): Promise<void> {
+  async deleteDocument(id: string, _env: Env): Promise<void> {
     // Vectorize doesn't have a per-document delete;
     // the mapping cleanup is handled in the queue consumer after deletion.
     // The next full sync will overwrite.
@@ -298,7 +292,7 @@ export class AutoRagHandler {
     const prev: Record<string, { doc_id: string; etag: string }> =
       (await env.SYNC_KV.get(MAPPING_KEY, "json")) || {};
 
-    for (const [key, val] of Object.entries(prev)) {
+    for (const key of Object.keys(prev)) {
       const CHUNK_KEY = `chunks:auto:${key}`;
       const chunkMetaRaw = await env.SYNC_KV.get(CHUNK_KEY);
       if (!chunkMetaRaw) {
