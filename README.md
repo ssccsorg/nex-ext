@@ -26,6 +26,8 @@ nex-ext/
 ├── e2e/             # end-to-end verification framework
 ├── ext/             # external engine runner harness (Python: lightrag,
 │                    #   graphiti, memgraph, edgequake adapters + _runner)
+├── gateway/         # Cloudflare sync workers: af-sync (R2 to the ext/
+│                    #   engines) and module-hub (gap-detector over Memgraph)
 ├── scripts/         # host wrappers for the ext/ engines and image builds
 └── kv/              # coord-based key-value engines (planned)
 ```
