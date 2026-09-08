@@ -1,0 +1,56 @@
+name: Deploy Gateway Workers
+
+on:
+  pull_request:
+    paths:
+      - "gateway/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  check:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: |
+            gateway/module-hub/package-lock.json
+            gateway/af-sync/package-lock.json
+      - name: npm ci check
+        run: ./scripts/deploy-gateway.sh --check
+
+      - name: Typecheck af-sync
+        run: |
+          npm --prefix gateway/af-sync run cf-typegen
+          npm --prefix gateway/af-sync run typecheck
+
+      - name: Typecheck module-hub
+        run: |
+          npm --prefix gateway/module-hub run cf-typegen
+          npm --prefix gateway/module-hub run typecheck
+
+  deploy:
+    # Manual only; requires the Cloudflare API token secret.
+    if: ${{ github.event_name == 'workflow_dispatch' && secrets.CFWORKER_EDIT != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: |
+            gateway/module-hub/package-lock.json
+            gateway/af-sync/package-lock.json
+      - name: Deploy workers
+        run: ./scripts/deploy-gateway.sh --token ${{ secrets.CFWORKER_EDIT }}
