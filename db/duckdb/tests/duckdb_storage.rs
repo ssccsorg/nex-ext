@@ -106,11 +106,11 @@ fn test_read_intents_from_parquet() {
 
     write_parquet(
         "SELECT 'intent_1' as intent_id, '[\"fact_1\"]' as from_facts, 'do something' as description, 'tester' as creator,
-                'worker_a' as worker, NULL as to_fact_id, '1782000000' as last_heartbeat_at,
-                '1781913600' as created_at, NULL as concluded_at
+                'worker_a' as worker, CAST(NULL AS VARCHAR) as to_fact_id, '1782000000' as last_heartbeat_at,
+                '1781913600' as created_at, CAST(NULL AS VARCHAR) as concluded_at
          UNION ALL
          SELECT 'intent_2' as intent_id, '[\"fact_1\",\"fact_2\"]' as from_facts, 'do more' as description, 'admin' as creator,
-                NULL as worker, 'fact_3' as to_fact_id, NULL as last_heartbeat_at,
+                CAST(NULL AS VARCHAR) as worker, 'fact_3' as to_fact_id, CAST(NULL AS VARCHAR) as last_heartbeat_at,
                 '1782000000' as created_at, '1782086400' as concluded_at",
         &parquet_path,
     );
@@ -413,8 +413,8 @@ fn test_full_board_state() {
     std::fs::create_dir_all(&intents_dir).unwrap();
     write_parquet(
         "SELECT 'i_1' as intent_id, '[]' as from_facts, 'explore' as description, 'agent' as creator,
-                NULL as worker, NULL as to_fact_id, NULL as last_heartbeat_at,
-                '2026-06-01' as created_at, NULL as concluded_at",
+                CAST(NULL AS VARCHAR) as worker, CAST(NULL AS VARCHAR) as to_fact_id, CAST(NULL AS VARCHAR) as last_heartbeat_at,
+                '2026-06-01' as created_at, CAST(NULL AS VARCHAR) as concluded_at",
         intents_dir.join("data.parquet").to_str().unwrap(),
     );
 
@@ -527,12 +527,12 @@ fn test_filter_intent_and_hint_ids() {
     std::fs::create_dir_all(&intents_dir).unwrap();
     write_parquet(
         "SELECT 'i_a' as intent_id, '[]' as from_facts, 'desc_a' as description, 'tester' as creator,
-                NULL as worker, NULL as to_fact_id, NULL as last_heartbeat_at,
-                '2026-06-01' as created_at, NULL as concluded_at
+                CAST(NULL AS VARCHAR) as worker, CAST(NULL AS VARCHAR) as to_fact_id, CAST(NULL AS VARCHAR) as last_heartbeat_at,
+                '2026-06-01' as created_at, CAST(NULL AS VARCHAR) as concluded_at
          UNION ALL
          SELECT 'i_b' as intent_id, '[]' as from_facts, 'desc_b' as description, 'tester' as creator,
-                NULL as worker, NULL as to_fact_id, NULL as last_heartbeat_at,
-                '2026-06-02' as created_at, NULL as concluded_at",
+                CAST(NULL AS VARCHAR) as worker, CAST(NULL AS VARCHAR) as to_fact_id, CAST(NULL AS VARCHAR) as last_heartbeat_at,
+                '2026-06-02' as created_at, CAST(NULL AS VARCHAR) as concluded_at",
         intents_dir.join("data.parquet").to_str().unwrap(),
     );
 
