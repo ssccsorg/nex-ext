@@ -18,7 +18,7 @@
 
 use nex_duckdb::DuckDbStorage;
 use nex_duckdb::flush::FlushCursor;
-use nex_fih::{CoordId, StorageRead}; // project_id via StorageRead
+use nex_fih::{CoordId, FihId20 as _, StorageRead}; // project_id via StorageRead
 use tempfile::TempDir;
 
 /// Create a DuckDbStorage with an empty temp directory.

@@ -2,7 +2,8 @@ use nex_duckdb::DuckDbStorage;
 use nex_fih::QueryCapable;
 use nex_fih::{ColdFilter, ColdQuery};
 use nex_fih::{
-    Content, CoordId, FilterCapable, ScanCapable, StateFilter, StorageRead, TimeRangeCapable,
+    Content, CoordId, FihId20 as _, FilterCapable, ScanCapable, StateFilter, StorageRead,
+    TimeRangeCapable,
 };
 use tempfile::TempDir;
 

@@ -7,8 +7,8 @@ pub mod flush;
 use flush::{FlushCursor, FlushResult};
 use nex_fih::ColdQuery;
 use nex_fih::{
-    BoardState, ColdStorage, Content, CoordId, EvictCapable, Fact, FilterCapable, Hint, Intent,
-    PartitionData, ScanCapable, StateFilter, StorageRead, TimeRangeCapable,
+    BoardState, ColdStorage, Content, CoordId, EvictCapable, Fact, FihId20 as _, FilterCapable,
+    Hint, Intent, PartitionData, ScanCapable, StateFilter, StorageRead, TimeRangeCapable,
 };
 use std::collections::BTreeMap;
 use std::fs;
