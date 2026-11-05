@@ -40,8 +40,10 @@ jobs:
           npm --prefix gateway/module-hub run typecheck
 
   deploy:
-    # Manual only; requires the Cloudflare API token secret.
-    if: ${{ github.event_name == 'workflow_dispatch' && secrets.CFWORKER_EDIT != '' }}
+    # Manual only. Whether the token is set is asked in a step, because a job-level
+    # condition cannot read the secrets context, and a workflow that names it there is
+    # rejected as a whole and records a failed run on every push.
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -52,5 +54,13 @@ jobs:
           cache-dependency-path: |
             gateway/module-hub/package-lock.json
             gateway/af-sync/package-lock.json
+      - name: Require the deploy token
+        env:
+          CFWORKER_EDIT: ${{ secrets.CFWORKER_EDIT }}
+        run: |
+          if [ -z "$CFWORKER_EDIT" ]; then
+            echo "::error::CFWORKER_EDIT is not set, and a manual deploy needs it"
+            exit 1
+          fi
       - name: Deploy workers
         run: ./scripts/deploy-gateway.sh --token ${{ secrets.CFWORKER_EDIT }}
