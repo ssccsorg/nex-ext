@@ -18,3 +18,6 @@ log = "0.4"
 nex = { git = "https://github.com/ssccsorg/nexus", package = "nex", branch = "main" }
 nex-core = { git = "https://github.com/ssccsorg/nexus", package = "nex-core", branch = "main" }
 nex-fih = { git = "https://github.com/ssccsorg/nexus", package = "nex-fih", branch = "main" }
+# The record layer left `nex-fih` for the reference node, so the end-to-end path that drives
+# it asks for that package. The host surface is all it needs.
+nexus-storage-ref = { git = "https://github.com/ssccsorg/nexus", package = "nexus-storage-ref", branch = "main", default-features = false, features = ["std"] }

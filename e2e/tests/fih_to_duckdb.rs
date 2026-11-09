@@ -20,7 +20,8 @@ use nex_cypher::Plan;
 use nex_duckdb::DuckDbStorage;
 use nex_fih::QueryCapable;
 use nex_fih::io::file_io::{FileIo, IoFuture};
-use nex_fih::{AsyncFactCapable, AsyncStorageRead, Content, Fact, FihStorage, StorageRead};
+use nex_fih::{AsyncFactCapable, Content, Fact, StorageRead};
+use nexus_storage_ref::RefFihStorage;
 use std::collections::HashMap;
 use std::sync::Mutex;
 use tempfile::TempDir;
@@ -116,7 +117,7 @@ fn fih_storage_facts_are_queryable_through_duckdb() {
     let (duck, _td) = empty_duckdb();
 
     // 1. Ingest into the nex network (FihStorage over in-memory FileIo).
-    let fih = FihStorage::new(MemIo::default(), "e2e");
+    let fih = RefFihStorage::new(MemIo::default(), "e2e");
     let f1 = Fact::new(
         "test".into(),
         Content {
